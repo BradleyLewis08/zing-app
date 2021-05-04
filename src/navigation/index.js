@@ -4,7 +4,6 @@ import Routes from './routes'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'react-native-elements'
 import UserProvider from './UserProvider'
-import StripeProvider from './StripeProvider'
 
 const Providers = () => {
     return (
