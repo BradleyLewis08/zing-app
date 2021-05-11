@@ -15,7 +15,6 @@ const LoginScreen = ({navigation}) => {
     const handleSignup = async () => {
         const response = await signup(email, password, firstName, lastName, username)
         if(response){
-            console.log(response)
             setErrors(response)
         }
     }

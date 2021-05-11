@@ -1,0 +1,20 @@
+import * as firebase from 'firebase';
+import '@firebase/auth';
+import '@firebase/firestore';
+import '@firebase/functions'
+import {FIREBASE_API_KEY} from '@env'
+const firebaseConfig = {
+    apiKey: FIREBASE_API_KEY,
+    authDomain: "zingapplication-70251.firebaseapp.com",
+    projectId: "zingapplication-70251",
+    storageBucket: "zingapplication-70251.appspot.com",
+    messagingSenderId: '326609409889',
+    appId: '1:326609409889:ios:a320db79924a1de3921720',
+};
+
+if (!firebase.apps.length) {
+    console.log(firebaseConfig)
+    firebase.initializeApp(firebaseConfig);
+}
+
+export { firebase };

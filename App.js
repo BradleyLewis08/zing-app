@@ -1,20 +1,12 @@
 import 'node-libs-react-native/globals'
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import Providers from './src/navigation/index'
-
+import Toast from 'react-native-toast-message'
 export default function App() {
   return (
-    <Providers />
+    <>
+      <Providers />
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

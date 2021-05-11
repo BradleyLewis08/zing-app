@@ -1,5 +1,5 @@
 import React, {createContext, useState, useContext} from "react"
-import {firebase} from '../firebase/config'
+import {firebase} from '../../firebase/config'
 
 export const AuthContext = createContext()
 
@@ -14,7 +14,6 @@ const AuthProvider = ({children}) => {
                     await firebase.auth().signInWithEmailAndPassword(email, password)
                 } catch(error) {
                     setUser(null)
-                    console.log(error)
                 }
             },
             signup: async (email, password, firstName, lastName, username) => {

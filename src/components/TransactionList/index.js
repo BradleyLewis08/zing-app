@@ -1,8 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {View, StyleSheet} from 'react-native'
-import { firebase } from '../../firebase/config' 
+import { firebase } from '../../../firebase/config' 
 import {ListItem} from 'react-native-elements'
-import { USER_COLLECTION_REF } from '../../db'
 import {UserContext} from '../../navigation/UserProvider'
 import {formCurrencyString} from '../../utils'
 
@@ -10,7 +9,7 @@ const TransactionList = ({}) => {
   const [transactions, setTransactions] = useState([])
   const { currentUser } = useContext(UserContext)
   const getUserTransactions = async () => {
-      const transactionSnapshot = await firebase.firestore().collection('transactions').where("transactionUsers", "array-contains", currentUser.uid).orderBy("createdAt").get()
+      const transactionSnapshot = await firebase.firestore().collection('transactions').where("transactionUsers", "array-contains", currentUser.uid).orderBy("createdAt", "desc").get()
       const transactions = transactionSnapshot.docs.map((doc) => {
         if(doc.data().recipient.uid == currentUser.uid) {
           return (
@@ -30,7 +29,6 @@ const TransactionList = ({}) => {
         
       })
       setTransactions(transactions)
-      console.log(transactions[0])
     }
   
   useEffect(() => {
@@ -49,7 +47,7 @@ const TransactionList = ({}) => {
                 </ListItem>
             ) : <ListItem key={i} containerStyle={styles.outboundTransaction}>
             <ListItem.Content containerStyle={styles.listItemContent}>
-                <ListItem.Title style={styles.transactionTitle}>{`You paid ${transaction.recipient.username}`}</ListItem.Title>
+                <ListItem.Title style={styles.transactionTitle}>{`You paid ${transaction.recipient.firstName}`}</ListItem.Title>
                 <ListItem.Subtitle style={{fontFamily: "Montserrat", marginTop:10}}>{transaction.message}</ListItem.Subtitle>
                 <ListItem.Title style={{alignSelf: "flex-end", fontFamily: "Montserrat"}}>{`- ${formCurrencyString(transaction.amount)}`}</ListItem.Title>
             </ListItem.Content>

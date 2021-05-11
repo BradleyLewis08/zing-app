@@ -1,18 +1,29 @@
-import React, {useContext} from "react"
+import React, {useContext, useEffect} from "react"
 import {Text, StyleSheet, SafeAreaView, ScrollView, View, ImageBackground, Image, TouchableOpacity} from "react-native"
 import {Avatar} from "react-native-elements"
 import {UserContext} from '../../navigation/UserProvider'
+import {AuthContext} from '../../navigation/AuthProvider'
 import { useFonts } from 'expo-font'
+import {firebase} from '../../../firebase/config'
 
 
 const ProfileScreen = ({navigation}) => {
-    const {currentUser} = useContext(UserContext)
-    const [loaded] = useFonts({
+    const {user} = useContext(AuthContext)
+    const {currentUser, setCurrentUser} = useContext(UserContext)
+    const getAndHandlerUserData = async (uid) => {
+        await firebase.firestore().collection('users').doc(uid).onSnapshot((doc) =>{
+            setCurrentUser(doc.data())
+        })
+    }
+    useEffect(() => {
+        getAndHandlerUserData(user.uid)
+    }, [])
+    const [fontsLoaded] = useFonts({
         Montserrat: require('../../../assets/fonts/Montserrat-Regular.otf'),
         MontserratBold: require('../../../assets/fonts/Montserrat-Bold.otf')
     })
 
-    if(!loaded) {
+    if(!fontsLoaded || !currentUser) {
         return null;
     }
     return (
@@ -25,7 +36,7 @@ const ProfileScreen = ({navigation}) => {
                 <Text style={{ color: "#fff", fontFamily: "MontserratBold", fontSize: 20, marginTop: 10}}>{`RM${(currentUser.balance / 100).toFixed(2)}`}</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate("Add Card")}} style={styles.sendButton}>
+                <TouchableOpacity onPress={() => {navigation.navigate("New Payment")}} style={styles.sendButton}>
                     <Image style={styles.buttonImage} source={require('../../../assets/send.png')}></Image>
                     <Text style={styles.actionText}>Send</Text>
                 </TouchableOpacity>

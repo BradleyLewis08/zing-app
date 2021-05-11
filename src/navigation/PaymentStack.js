@@ -8,9 +8,8 @@ const Stack = createStackNavigator()
 const PaymentStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen component={ProfileScreen} name="Profile" options={{header: () => null}}></Stack.Screen>
-            <Stack.Screen component={AddRecipientScreen} name="Add Recipients"></Stack.Screen>
-            <Stack.Screen component={SendScreen} name="Send"></Stack.Screen>
+            <Stack.Screen component={AddRecipientScreen} name="Add Recipients" options={{header: () => null}} />
+            <Stack.Screen component={SendScreen} name="Send" options={{header: () => null}} />
         </Stack.Navigator>
     )
 }

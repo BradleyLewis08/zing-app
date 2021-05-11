@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {View, StyleSheet} from 'react-native'
 import {Button} from 'react-native-elements'
 import {CreditCardInput} from 'react-native-credit-card-input' 
 import axios from 'axios'
-import {firebase} from '../../firebase/config'
-import {createPaymentMethodFunction} from '../../utils/callableFunctions'
-import {createCardToken} from '../../utils/stripe'
-
+import {firebase} from '../../../firebase/config'
+import {saveNewCard} from '../../utils/callableFunctions' 
+import {UserContext} from '../../navigation/UserProvider'
+import Toast from 'react-native-toast-message'
+import {capitalize} from '../../utils'
 const AddCardScreen = ({}) => { 
   //const createPaymentMethodFunction = firebase.functions().httpsCallable('createPaymentMethod')
   const [cardForm, setCardForm] = useState()
   const [canSubmit, setCanSubmit] = useState(false)
-
-
+  const {currentUser} = useContext(UserContext)
   const formatCardFormData = () => {
     const dates = cardForm["values"]["expiry"].split("/")
     const expiryMonth = dates[0]
@@ -22,15 +22,27 @@ const AddCardScreen = ({}) => {
         expiryMonth,
         expiryYear,
         cvc: cardForm["values"]["cvc"],
-        brand: "visa"
     }
   }
-
-  const createPaymentMethod = async () => {
+  const showToast = (message, status) => {
+    Toast.show({
+      text1: capitalize(status),
+      text2: message,
+      topoffset: 50,
+      type: status
+    })
+  }
+  const processCard = async () => {
       const cardDetails = formatCardFormData()
-      const token = await createCardToken(payload)
-      console.log(token)
-      // const response = await createPaymentMethodFunction({data: payload})
+      const payload = {
+        userId: currentUser.uid,
+        card: cardDetails
+      }
+      const saveCardResults = await saveNewCard(payload)
+      console.log(saveCardResults)
+      const message = "error" in saveCardResults.data ? "Something went wrong" : "Card saved successfully"
+      const status = "error" in saveCardResults.data ? "error" : "success"
+      showToast(message, status)
   }
   const handleChange = (form) => {
       if(form["valid"]){
@@ -43,7 +55,7 @@ const AddCardScreen = ({}) => {
   return (
     <View style={styles.container}>
         <CreditCardInput onChange={handleChange}/>
-        <Button disabled={!canSubmit} title="Add Card" style={{marginTop: 20}} onPress={() => createPaymentMethod()}></Button>
+        <Button disabled={!canSubmit} title="Add Card" style={{marginTop: 20}} onPress={() => processCard()}></Button>
     </View>
   )
 } 

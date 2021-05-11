@@ -17,9 +17,7 @@ const ManageScreen = ({navigation}) => {
               <TransactionList />
           </View>
         </ScrollView>
-      </SafeAreaView>
-      
-    
+      </SafeAreaView>    
   )
 } 
 const styles = StyleSheet.create({

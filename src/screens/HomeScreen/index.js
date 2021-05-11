@@ -3,20 +3,10 @@ import {View, Text, StyleSheet, ActivityIndicator} from "react-native"
 import {AuthContext} from "../../navigation/AuthProvider"
 import {UserContext} from "../../navigation/UserProvider"
 import {Button} from "react-native-elements"
-import {firebase} from "../../firebase/config"
+import {firebase} from "../../../firebase/config"
 
 const HomeScreen = () => {
-    const {user, signOut, setUser} = useContext(AuthContext)
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    const getAndHandlerUserData = async (uid) => {
-        await firebase.firestore().collection('users').doc(uid).onSnapshot((doc) =>{
-            setCurrentUser(doc.data())
-        })
-    }
-    useEffect(() => {
-        getAndHandlerUserData(user.uid)
-    }, [])
-    
+
     if(currentUser){
         return (
             <View style={styles.container}>

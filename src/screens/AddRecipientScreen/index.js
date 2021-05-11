@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react'
 import {View, StyleSheet, Text} from "react-native"
 import {SearchBar} from "react-native-elements"
 import UserList from "../../components/UserList"
-import { firebase } from '../../firebase/config'
+import { firebase } from '../../../firebase/config'
 import {UserContext} from '../../navigation/UserProvider'
 import {USER_COLLECTION_REF} from '../../db'
 

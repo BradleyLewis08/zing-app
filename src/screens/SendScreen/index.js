@@ -4,13 +4,12 @@ import {View, StyleSheet, Text} from "react-native"
 import {Input, Button} from "react-native-elements"
 import HeaderText from "../../components/HeaderText"
 import NumericInput from "@wwdrew/react-native-numeric-textinput"
-import { firebase } from '../../firebase/config'
+import { firebase } from '../../../firebase/config'
 import {UserContext} from '../../navigation/UserProvider'
 
 
 const SendScreen = ({route, navigation}) =>  {
     const { currentUser } = useContext(UserContext)
-
     const getUserData = async (senderRef, recipientRef) => {
         const senderResponse = await senderRef.get()
         const recipientResponse = await recipientRef.get()
@@ -80,6 +79,9 @@ const SendScreen = ({route, navigation}) =>  {
                     <Text style={{ color:"#3455AE", fontSize: 15, fontFamily:"Montserrat", marginBottom: 5, marginLeft: 50}}>Your Message</Text>
                     <Input style={{fontFamily: "Montserrat", fontSize: 15}} containerStyle={styles.messageField} inputContainerStyle={{borderBottomWidth: 0, fontFamily: "Montserrat"}} value={message} onChangeText={(value) => setMessage(value)} />
                 </View>
+                <View style={styles.paymentMethodsInput}>
+                    <Text style={{ color:"#3455AE", fontSize: 15, fontFamily:"Montserrat", marginBottom: 5, marginLeft: 50}}>Pay With</Text>
+                </View>
                 <View style={styles.sendButton}>
                     <Button onPress={() => handleSend()} titleStyle={styles.buttonText} buttonStyle={styles.button} title="Send"></Button>
                 </View>
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     messageField: { 
         borderRadius: 15,
         width: 300,
-        height: 150,
+        height: 100,
         alignSelf: "center",
         borderColor: "#3455AE",
         borderWidth: 1,
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     button: {
-        marginTop: 77,
+        marginTop: 100,
         padding: 20,
         width: "100%",
         backgroundColor: "#3455AE",
